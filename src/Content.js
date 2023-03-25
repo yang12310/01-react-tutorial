@@ -1,36 +1,37 @@
-import React from 'react'
+import {useState} from 'react';
+import {FaTrashAlt} from 'react-icons/fa'
 
-const Content = () => {
-
-    const nameChange = () =>{
-        const names = ['Bob', 'Kevin', 'Dave'];
-        const int = Math.floor(Math.random() * 3);
-        return names[int];
-    }
-
-    const handleClick = () => {
-        console.log("You Clicked it");
-    }
-    //이벤트 처리할때는 함수선언이 아닌 함수표현식을 써야함
-
-    const handleClick2 = (name) => {
-        console.log(`${name} was clicked`)
-    }
-
-    const handleClick3 = (e) => {
-        console.log(e.target.innerText);
-    }
-
-  return (
-    <main>
-        <p>
-            Hello {nameChange()} !
-        </p>
-        <button onClick={handleClick}>click</button>
-        <button onClick={() => handleClick2('Dave')}>click</button>
-        <button onClick={(e) => handleClick3(e)}>click me</button>
-    </main>
-  )
+const Content = ({items, handleCheck, handleDelete}) => {
+    return (
+        <main>
+            {items.length ? (
+            <ul>
+                {items.map((item) => (
+                    <li className= "item" key={item.id}>
+                        <input 
+                            type = "checkbox"
+                            onChange = {() => handleCheck(item.id)}
+                            checked = {item.checked}
+                        />
+                        <label 
+                            style={(item.checked) ? {textDecoration : 'line-through'} : null}
+                            onDoubleClick = {() => handleCheck(item.id)}
+                        
+                        >{item.item}</label>
+                        <FaTrashAlt 
+                            onClick = {() => handleDelete(item.id)}
+                            role="button" 
+                            tabIndex = "0"
+                        />
+                    </li>
+                )
+                )}
+            </ul>
+            ) : (
+                <p style={{marginTop : '2rem'}}>Your list is empty</p>
+            )}
+        </main>
+    )
 }
 
 export default Content;
